@@ -6,5 +6,7 @@ require('../src/bootstrap').then(function(config) {
     config.get('server.keyPair'),
     config.getAuthorized()
   );
-  server.listen(config.get('server.port'));
+  server.listen(config.get('server.port'), function() {
+    console.log('Listening on port %d', config.get('server.port'));
+  });
 });
