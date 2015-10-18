@@ -29,7 +29,7 @@ require('../src/bootstrap').then(function(config) {
     })
     .then(function() {
       var mkfifo = require('mkfifo').mkfifoSync;
-      mkfifo(process.env.HOME + '/.warp-pipe/' + name, parseInt('0755', 8)
+      mkfifo(process.env.HOME + '/.warp-pipe/' + name, parseInt('0755', 8));
     })
 
 });
