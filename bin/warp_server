@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+'use strict';
+
+require('../src/bootstrap').then(function(config) {
+  var server = require('../src/server')(
+    config.get('server.keyPair'),
+    config.getAuthorized()
+  );
+  server.listen(config.get('server.port'));
+});

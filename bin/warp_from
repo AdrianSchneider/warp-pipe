@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+'use strict';
+
+var fs = require('fs');
+var argv = require('yargs')
+  .usage('$0 <pipe_name> [options]')
+  .demand(1, 'You must specify a pipe name to receive from')
+  .argv;
+
+var name = argv._[0];
+
+require('../src/bootstrap').then(function(config) {
+  if (!config.hasPipe(name)) {
+    console.error('No pipe "' + name + '" registered yet');
+    process.exit(1);
+  }
+
+  var file = config.getPipeFilename(name);
+  fs.createReadStream(file).pipe(process.stdout);
+});

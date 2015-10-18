@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+'use strict';
+
+var argv = require('yargs')
+  .usage('$0 <pipe_name> [options]')
+  .demand(1, 'You must specify a pipe name to from')
+  .describe('h', 'Remote hostname')
+  .demand('h')
+  .describe('p', 'Remote port')
+  .argv;
+
+var name = argv._[0];
+var Promise = require('bluebird');
+var createKeys = Promise.promisify(require('rsa-json'));
+
+require('../src/bootstrap').then(function(config) {
+  if (config.hasPipe(name)) {
+    console.error('Pipe "' + name + '" already registered');
+    process.exit(1);
+  }
+
+  createKeys()
+    .then(function(key) {
+      return config.registerPipe(name, key, argv.h, argv.p)
+    })
+    .then(function(publicKey) {
+      console.error('Give ' + name + ' your public key below:\n');
+      process.stdout.write(publicKey);
+    })
+    .then(function() {
+      var mkfifo = require('mkfifo').mkfifoSync;
+      mkfifo(process.env.HOME + '/.warp-pipe/' + name, parseInt('0755', 8)
+    })
+
+});
