@@ -1,16 +1,33 @@
 {
   "name": "warp-pipe",
   "version": "1.0.0",
-  "description": "Named warp pipes for all!",
+  "description": "Securely transmit data between computers through a pipe.",
   "main": "index.js",
+  "keywords": [
+    "warp",
+    "pipe",
+    "fifo",
+    "netcat"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdrianSchneider/warp-pipe.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "warp": "bin/client",
-    "warp-server": "bin/server"
+    "warp_to": "bin/warp_to",
+    "warp_from": "bin/warp_from",
+    "warp_server": "bin/warp_server",
+    "warp_register": "bin/warp_register",
+    "warp_authorize": "bin/warp_authorize"
   },
-  "author": "",
+  "author": {
+    "name": "Adrian Schneider",
+    "email": "adrian@compiledintent.com",
+    "url": "http://adrianschneider.ca/"
+  },
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.10.2",
@@ -21,5 +38,6 @@
     "through2": "^2.0.0",
     "underscore": "^1.8.3",
     "yargs": "^3.27.0"
-  }
+  },
+  "preferGlobal": true
 }
