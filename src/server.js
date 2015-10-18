@@ -13,7 +13,7 @@ module.exports = function(keyPair, authorized) {
     });
 
     sec.on('identify', function (id) {
-      var key = id.key['public'];
+      var key = id.key['public'].trim();
       if (typeof authorized[key] === 'undefined') {
         console.error('Rejecting unknown key');
         return id.reject();

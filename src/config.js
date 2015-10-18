@@ -69,7 +69,7 @@ function Config(basePath, ready) {
   };
 
   this.authorize = function(name, publicKey) {
-    config.authorized[name] = publicKey;
+    config.authorized[name] = publicKey.trim();
     return fs.writeFileAsync(configFile, serialize());
   };
 
