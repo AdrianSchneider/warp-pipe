@@ -1,6 +1,8 @@
 # Warp Pipe
 
-This is a work in progress. Warp pipe lets you securely create named pipes (fifos) between computers, allowing you to send or receive data asynchronously.
+WARNING: This is a work in progress. The mutual authentication is not set up yet, so while the server authorizes and can subsequently trust the client, the client cannot yet trust the server.
+
+Warp pipe lets you securely create named pipes (fifos) between computers, allowing you to send or receive data asynchronously.
 
 ## Use Cases
 
@@ -21,3 +23,7 @@ Instead of asking for things, waiting, manually grabbing it, and acting on it, y
 ```warp_from coworker_a | import_data_using_config```
 
 ```warp_to coworker_b < ~/Files/the-one-he-needs```
+
+## Installation
+
+Holding off on npm install until security implementation is wrapped up.
