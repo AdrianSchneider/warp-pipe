@@ -1,6 +1,8 @@
 # Warp Pipe
 
-Warp pipe lets you securely create named pipes (fifos) between computers, allowing you to send or receive data asynchronously.
+Warning: this is a very rough work-in-progress!
+
+Warp pipe lets you securely create named pipes (fifos) between computers, allowing you to send or receive data asynchronously. 
 
 ## Use Cases
 
@@ -24,7 +26,7 @@ Instead of asking for things, waiting, manually grabbing it, and acting on it, y
 
 ## Installation
 
-npm install -g warp-pipe
+Manually check out the repo and add the `bin` dir to our path until I publish to npm.
 
 ## Authentication
 
