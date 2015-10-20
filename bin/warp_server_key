@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+
+require('../src/bootstrap').then(function(config) {
+  console.log(config.get('server.keyPair')['public']);
+});

@@ -18,8 +18,7 @@ function Config(basePath, ready) {
   var setupConfig = function() {
     var defaultConfig = {
       "server.port": 1337,
-      "pipes": {},
-      "authorized": {}
+      "pipes": {}
     };
 
     return fs.statAsync(basePath)
@@ -49,19 +48,22 @@ function Config(basePath, ready) {
   };
 
   this.hasPipe = function(name) {
-    return typeof config.pipes[name] !== 'undefined';
+    return typeof config.pipes[name] !== 'undefined' && typeof config.pipes[name].outgoing !== 'undefined';
   };
 
-  this.registerPipe = function(name, keyPair, hostname, port) {
+  this.registerPipe = function(name, serverPublic, keyPair, hostname, port) {
     var pipe = {
+      name: name,
       keyPair: keyPair,
+      serverPublic: serverPublic,
       hostname: hostname,
       port: port || 1337
     };
 
     return self.reloadFromDisk()
       .then(function() {
-        config.pipes[name] = pipe;
+        if(!config.pipes[name]) config.pipes[name] = { name: name };
+        config.pipes[name].outgoing = pipe;
         fs.writeFileAsync(configFile, serialize());
       })
       .then(function() {
@@ -69,24 +71,27 @@ function Config(basePath, ready) {
       });
   };
 
-  this.hasAuthorized = function(name) {
-    return typeof config.authorized[name] !== 'undefined';
-  };
-
   this.authorize = function(name, publicKey) {
-    config.authorized[name] = publicKey.trim();
     return self.reloadFromDisk()
       .then(function() {
-        config.authorized[name] = publicKey.trim();
+        if(!config.pipes[name]) config.pipes[name] = { name: name };
+        config.pipes[name].incoming = publicKey.trim();
         return fs.writeFileAsync(configFile, serialize());
+      })
+      .then(function() {
+        return self.get('server.keyPair')['public'];
       });
   };
 
   this.getAuthorized = function() {
-    return Object.keys(config.authorized).reduce(function(out, name) {
-      out[config.authorized[name]] = name;
-      return out;
-    }, {});
+    return _.values(config.pipes)
+      .filter(function(pipe) {
+        return pipe.incoming;
+      })
+      .reduce(function(authorizations, pipe) {
+        authorizations[pipe.incoming] = pipe.name;
+        return authorizations;
+      }, {});
   };
 
   this.getNameByKey = function(key) {

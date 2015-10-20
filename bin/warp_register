@@ -14,14 +14,12 @@ var Promise = require('bluebird');
 var createKeys = Promise.promisify(require('rsa-json'));
 
 require('../src/bootstrap').then(function(config) {
-  if (config.hasPipe(name)) {
-    console.error('Pipe "' + name + '" already registered');
-    process.exit(1);
-  }
-
   createKeys()
     .then(function(key) {
-      return config.registerPipe(name, key, argv.h, argv.p)
+      return drainInput().then(function(input) {
+        console.error('registering');
+        return config.registerPipe(name, input, key, argv.h, argv.p)
+      });
     })
     .then(function(publicKey) {
       console.error('Give ' + name + ' your public key below:\n');
@@ -33,3 +31,12 @@ require('../src/bootstrap').then(function(config) {
     })
 
 });
+
+function drainInput() {
+  return new Promise(function(resolve, reject) {
+    var input = '';
+    process.stdin.on('data', function(data) { input += data.toString('utf-8'); });
+    process.stdin.on('end', function() { resolve(input); });
+    process.stdin.on('error', reject);
+  });
+};

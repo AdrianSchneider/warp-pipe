@@ -11,11 +11,6 @@ var Promise = require('bluebird');
 var createKeys = Promise.promisify(require('rsa-json'));
 
 require('../src/bootstrap').then(function(config) {
-  if (config.hasAuthorized(name)) {
-    console.error('Pipe "' + name + '" already registered');
-    process.exit(1);
-  }
-
   var input = '';
   process.stdin.on('data', function(data) {
     input += data.toString('utf-8');
@@ -23,8 +18,7 @@ require('../src/bootstrap').then(function(config) {
   process.stdin.on('end', function() {
     config.authorize(name, input)
       .then(function() {
-        console.log( name + ' has been authorized');
-      });
+        console.error( name + ' has been authorized.');
+      })
   });
-
 });

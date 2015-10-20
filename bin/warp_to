@@ -15,6 +15,6 @@ require('../src/bootstrap').then(function(config) {
     process.exit(1);
   }
 
-  var client = require('../src/client')(process.stdin, config.get('pipes')[name]);
+  var client = require('../src/client')(process.stdin, config.get('pipes')[name].outgoing);
 });
 
