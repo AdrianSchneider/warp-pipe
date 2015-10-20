@@ -27,3 +27,13 @@ Instead of asking for things, waiting, manually grabbing it, and acting on it, y
 ## Installation
 
 Holding off on npm install until security implementation is wrapped up.
+
+**Register a remote server / warp pipe:**
+
+`warp_register <name> -h <hostname> -p <port> > ./publicKeyToShare` 
+
+**Authorize client on other server:**
+
+`warp_authorize <name> < ./publicKeyThatWasShared`
+
+Once this is set up, you can read from `warp_from <name>` or write to `warp_to <name>` as if they were local files.
