@@ -7,6 +7,7 @@ var createKeys = Promise.promisify(require('rsa-json'));
 var fs         = Promise.promisifyAll(require('fs'));
 
 function Config(basePath, ready) {
+  var self = this;
   var config;
   var configFile = path.resolve(basePath, './config.json');
 
@@ -33,7 +34,7 @@ function Config(basePath, ready) {
       })
       .catch(function(error) {
         return createKeys().then(function(keyPair) {
-          var config = _.extend(defaultConfig, { "server.keyPair": keyPair });
+          config = _.extend(defaultConfig, { "server.keyPair": keyPair });
           return fs.writeFileAsync(configFile, serialize())
           .then(function() {
             return config;
@@ -52,13 +53,17 @@ function Config(basePath, ready) {
   };
 
   this.registerPipe = function(name, keyPair, hostname, port) {
-    config.pipes[name] = {
+    var pipe = {
       keyPair: keyPair,
       hostname: hostname,
       port: port || 1337
     };
 
-    return fs.writeFileAsync(configFile, serialize())
+    return self.reloadFromDisk()
+      .then(function() {
+        config.pipes[name] = pipe;
+        fs.writeFileAsync(configFile, serialize());
+      })
       .then(function() {
         return keyPair.public;
       });
@@ -70,7 +75,11 @@ function Config(basePath, ready) {
 
   this.authorize = function(name, publicKey) {
     config.authorized[name] = publicKey.trim();
-    return fs.writeFileAsync(configFile, serialize());
+    return self.reloadFromDisk()
+      .then(function() {
+        config.authorized[name] = publicKey.trim();
+        return fs.writeFileAsync(configFile, serialize());
+      });
   };
 
   this.getAuthorized = function() {
@@ -97,6 +106,13 @@ function Config(basePath, ready) {
     );
   };
 
+  this.reloadFromDisk = function() {
+    return fs.readFileAsync(configFile, 'utf8')
+      .then(JSON.parse)
+      .then(function(newConfig) {
+        config = newConfig;
+      });
+  };
 
   construct().then(function() { ready(); });
 }

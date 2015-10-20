@@ -2,10 +2,7 @@
 'use strict';
 
 require('../src/bootstrap').then(function(config) {
-  var server = require('../src/server')(
-    config.get('server.keyPair'),
-    config.getAuthorized()
-  );
+  var server = require('../src/server')(config)
   server.listen(config.get('server.port'), function() {
     console.log('Listening on port %d', config.get('server.port'));
   });
