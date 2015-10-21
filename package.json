@@ -1,6 +1,6 @@
 {
   "name": "warp-pipe",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Securely transmit data between computers through a pipe.",
   "main": "index.js",
   "keywords": [
