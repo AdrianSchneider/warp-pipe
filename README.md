@@ -26,7 +26,9 @@ Instead of asking for things, waiting, manually grabbing it, and acting on it, y
 
 ## Installation
 
-Manually check out the repo and add the `bin` dir to our path until I publish to npm.
+`npm install -g warp-pipe`
+
+You'll need `warp_server` running to accept incoming connections.
 
 ## Authentication
 
