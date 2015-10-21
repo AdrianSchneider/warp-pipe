@@ -17,7 +17,7 @@ function Config(basePath, ready) {
 
   var setupConfig = function() {
     var defaultConfig = {
-      "server.port": 1337,
+      "server.port": 13370,
       "pipes": {}
     };
 
@@ -57,7 +57,7 @@ function Config(basePath, ready) {
       keyPair: keyPair,
       serverPublic: serverPublic,
       hostname: hostname,
-      port: port || 1337
+      port: port || 13370
     };
 
     return self.reloadFromDisk()
