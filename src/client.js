@@ -12,7 +12,7 @@ module.exports = function(inputStream, target) {
   sec.on('identify', function(id) {
     if (target.serverPublic.trim() !== id.key['public'].trim()) {
       id.reject();
-      throw new Error('Rejecting unknown serer key');
+      throw new Error('Rejecting unknown server key');
     }
 
     id.accept();
